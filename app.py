@@ -1,58 +1,50 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
+from ultralytics import YOLO  # or use YOLOv5 if not using Ultralytics >=8
+import numpy as np
 from PIL import Image
-import os
-import torch
-import pyttsx3
-from captioning_model import generate_caption
-import uuid
+from flask_cors import CORS  # For enabling CORS if needed
 
-# Initialize Flask
 app = Flask(__name__)
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+CORS(app)  # Enable CORS for cross-origin requests (important for Flutter)
 
-# Load YOLOv5 model
-yolo_model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+# Load YOLO model
+model = YOLO('yolov5s.pt')  # Ensure the path to your model file is correct
 
-# TTS function
-def text_to_speech(text, output_file='tts_output.wav'):
-    engine = pyttsx3.init()
-    engine.save_to_file(text, output_file)
-    engine.runAndWait()
-    return output_file
-
-# Flask route
 @app.route('/caption', methods=['POST'])
 def caption():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image provided"}), 400
+    try:
+        # Ensure an image is provided in the request
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image uploaded'}), 400
 
-    # Save uploaded image
-    image_file = request.files['image']
-    image_id = str(uuid.uuid4())
-    image_path = os.path.join(UPLOAD_FOLDER, f"{image_id}.jpg")
-    image_file.save(image_path)
+        # Get the image from the request
+        file = request.files['image']
+        image = Image.open(file.stream).convert('RGB')
+        image = np.array(image)
 
-    # Generate caption
-    caption = generate_caption(image_path)
+        # Perform object detection
+        results = model(image)
 
-    # Detect objects with YOLOv5
-    results = yolo_model(image_path)
-    detected_objects = results.names
-    labels = list(set([results.names[int(cls)] for cls in results.pred[0][:, -1].tolist()]))
+        # Extract bounding boxes, labels, and confidences
+        boxes = results[0].boxes.xyxy.cpu().numpy().tolist()  # [x1, y1, x2, y2]
+        labels = results[0].boxes.cls.cpu().numpy().tolist()
+        confidences = results[0].boxes.conf.cpu().numpy().tolist()
 
-    # Generate TTS
-    audio_file = text_to_speech(caption)
+        # Generate a caption based on labels
+        caption = "Detected Objects: " + ", ".join([str(label) for label in labels])
 
-    return jsonify({
-        "caption": caption,
-        "objects": labels,
-        "audio_url": "/tts-audio"
-    })
+        # Return the results as JSON
+        return jsonify({
+            'caption': caption,
+            'boxes': boxes,
+            'labels': labels,
+            'confidences': confidences
+        })
 
-@app.route("/tts-audio")
-def serve_audio():
-    return send_file("tts_output.wav", mimetype="audio/wav")
+    except Exception as e:
+        # Log the error to the server logs and return a 500 error
+        print(f"Error during processing: {e}")
+        return jsonify({'error': f"Server error: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
