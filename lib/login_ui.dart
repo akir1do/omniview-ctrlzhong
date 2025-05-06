@@ -12,7 +12,7 @@ class LoginUI extends StatefulWidget {
   @override
   State<LoginUI> createState() => _LoginUIState();
 }
-
+//Empty user name or password checker
 class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -72,13 +72,14 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
     });
   }
 
+//Padding field
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Back', style: TextStyle(color: Colors.black)),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -94,11 +95,15 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const WelcomeTopLeftText(),
+                  // To change the position
+                  const SizedBox(height: 92),
                   const Text(
                     'Please enter your username and password',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
+                      color: Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -126,6 +131,25 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
                   _LoginButton(
                     onPressed: _handleLogin,
                   ),
+                  // Add space between Login button and Forgot Password link
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 64, 46, 104), // Dark purple
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -136,6 +160,7 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
   }
 }
 
+//username box
 class _UsernameField extends StatelessWidget {
   final TextEditingController controller;
   const _UsernameField({required this.controller});
@@ -144,14 +169,16 @@ class _UsernameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      style: const TextStyle(color: Colors.black),
       decoration: const InputDecoration(
         labelText: 'Username',
+        labelStyle: TextStyle(color: Colors.black),
         border: OutlineInputBorder(),
       ),
     );
   }
 }
-
+//password box
 class _PasswordField extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
@@ -167,12 +194,15 @@ class _PasswordField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         labelText: 'Password',
+        labelStyle: const TextStyle(color: Colors.black),
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           icon: Icon(
             obscureText ? Icons.visibility_off : Icons.visibility,
+            color: Colors.black,
           ),
           onPressed: onToggle,
         ),
@@ -180,7 +210,7 @@ class _PasswordField extends StatelessWidget {
     );
   }
 }
-
+//login box
 class _LoginButton extends StatelessWidget {
   final VoidCallback onPressed;
   const _LoginButton({required this.onPressed});
@@ -203,7 +233,7 @@ class _LoginButton extends StatelessWidget {
     );
   }
 }
-
+//welcome animation
 class WelcomeScreen extends StatefulWidget {
   final String username;
   const WelcomeScreen({Key? key, required this.username}) : super(key: key);
@@ -275,6 +305,126 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
               textAlign: TextAlign.center,
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// --- Forgot Password Area ---
+class ForgotPasswordScreen extends StatelessWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // <-- Adjust vertical position here
+            children: [
+              // Title
+              const Text(
+                'Forgot Password',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 64, 46, 104),
+                ),
+                textAlign: TextAlign.center, // <-- Adjust horizontal position here
+              ),
+              const SizedBox(height: 32),
+              // Instruction
+              const Text(
+                'Enter your email address and we will send a code shortly',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              // Email input and Send button
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          hintText: 'Email address',
+                          border: InputBorder.none,
+                          isDense: true, // Make TextField more compact
+                          contentPadding: EdgeInsets.symmetric(vertical: 14),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        height: 50, // Match the height of the TextField
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: Implement send code logic
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 64, 46, 104), // Dark purple
+                            padding: EdgeInsets.zero, // Remove default padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Send',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class WelcomeTopLeftText extends StatelessWidget {
+  // To change the vertical position, adjust the 'topPadding' parameter.
+  final double topPadding;
+  const WelcomeTopLeftText({Key? key, this.topPadding = 10.0}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: EdgeInsets.only(top: topPadding, left: 10.0),
+        child: Text(
+          'Welcome!',
+          style: const TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 64, 46, 104), // Dark purple
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
