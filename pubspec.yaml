@@ -1,11 +1,11 @@
 name: flutter_application_1
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'  # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ">=3.7.2 <4.0.0"  # Ensure Flutter SDK version is compatible
 
 dependencies:
   flutter:
@@ -19,7 +19,10 @@ dependencies:
   image_picker: ^0.8.6
   path: ^1.8.3
   permission_handler: ^11.0.1
-  flutter_tts: ^3.6.3  # text-to-speech
+  flutter_tts: ^3.6.3  # Text-to-speech
+
+  # Add other necessary dependencies here, such as image processing libraries
+  # For YOLOv5 integration, you might need dependencies like 'flutter_tesseract_ocr' or 'provider'
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +30,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Add the necessary assets section if you are using any custom assets
