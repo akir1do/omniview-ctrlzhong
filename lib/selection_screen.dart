@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'camera_ui.dart';
 import 'logout_helper.dart';
-import 'premium_ui.dart';
+import 'subscription_tiers.dart';
 import '../main.dart'; // Import ThemeNotifier
 
 class SelectionScreen extends StatelessWidget {
@@ -66,7 +66,7 @@ class SelectionScreen extends StatelessWidget {
                   isDark: isDark,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const PremiumUI()),
+                      MaterialPageRoute(builder: (context) => const SubscriptionTiersScreen()),
                     );
                   },
                 ),
