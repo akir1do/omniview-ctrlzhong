@@ -13,20 +13,20 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:5:5-66
-15-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:5:22-64
+15-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:5:5-66
+15-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:5:22-64
 16    <uses-permission android:name="android.permission.CAMERA" />
-16-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:2:5-64
-16-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:2:22-62
+16-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:2:5-64
+16-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:2:22-62
 17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-17-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:3:5-79
-17-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:3:22-77
+17-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:3:5-79
+17-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:3:22-77
 18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-18-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:4:5-80
-18-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:4:22-78
+18-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:4:5-80
+18-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:4:22-78
 19    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-19-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:6:5-70
-19-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:6:22-68
+19-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:6:5-70
+19-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:6:22-68
 20    <!--
 21 Required to query activities that can process text, see:
 22         https://developer.android.com/training/package-visibility and
@@ -35,16 +35,16 @@
 25         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 26    -->
 27    <queries>
-27-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:47:5-52:15
+27-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:47:5-52:15
 28        <intent>
-28-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:48:9-51:18
+28-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:48:9-51:18
 29            <action android:name="android.intent.action.PROCESS_TEXT" />
-29-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:49:13-72
-29-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:49:21-70
+29-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:49:13-72
+29-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:49:21-70
 30
 31            <data android:mimeType="text/plain" />
-31-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:50:13-50
-31-->C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:50:19-48
+31-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:50:13-50
+31-->C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\AndroidManifest.xml:50:19-48
 32        </intent>
 33    </queries>
 34
@@ -102,70 +102,70 @@
 80            android:value="2" />
 81
 82        <provider
-82-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-16:20
+82-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-16:20
 83            android:name="com.sidlatau.flutteremailsender.FlutterEmailSenderFileProvider"
-83-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-90
+83-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-90
 84            android:authorities="com.example.flutter_application_1.file_provider"
-84-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-65
+84-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-65
 85            android:exported="false"
-85-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-37
+85-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-37
 86            android:grantUriPermissions="true" >
-86-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-47
+86-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-47
 87            <meta-data
-87-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:61
+87-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:61
 88                android:name="android.support.FILE_PROVIDER_PATHS"
-88-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
+88-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
 89                android:resource="@xml/shared_file_paths" />
-89-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-58
+89-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-58
 90        </provider>
 91        <provider
-91-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:9-17:20
+91-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:9-17:20
 92            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-92-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-82
+92-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-82
 93            android:authorities="com.example.flutter_application_1.flutter.image_provider"
-93-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-74
+93-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-74
 94            android:exported="false"
-94-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-37
+94-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-37
 95            android:grantUriPermissions="true" >
-95-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-47
+95-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-47
 96            <meta-data
-96-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:61
+96-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-15:61
 97                android:name="android.support.FILE_PROVIDER_PATHS"
-97-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
+97-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:17-67
 98                android:resource="@xml/flutter_image_picker_file_paths" />
-98-->[:flutter_email_sender] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-58
+98-->[:flutter_email_sender] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:17-58
 99        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
 100        <service
-100-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:9-31:19
+100-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:9-31:19
 101            android:name="com.google.android.gms.metadata.ModuleDependencies"
-101-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:20:13-78
+101-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:20:13-78
 102            android:enabled="false"
-102-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:13-36
+102-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:13-36
 103            android:exported="false" >
-103-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:22:13-37
+103-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:22:13-37
 104            <intent-filter>
-104-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:13-26:29
+104-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:24:13-26:29
 105                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
-105-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:17-94
-105-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:25-91
+105-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:17-94
+105-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:25:25-91
 106            </intent-filter>
 107
 108            <meta-data
-108-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:13-30:36
+108-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:28:13-30:36
 109                android:name="photopicker_activity:0:required"
-109-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:17-63
+109-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:29:17-63
 110                android:value="" />
-110-->[:image_picker_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:30:17-33
+110-->[:image_picker_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:30:17-33
 111        </service>
 112
 113        <activity
-113-->[:url_launcher_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-11:74
+113-->[:url_launcher_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:9-11:74
 114            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-114-->[:url_launcher_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-74
+114-->[:url_launcher_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:13-74
 115            android:exported="false"
-115-->[:url_launcher_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-37
+115-->[:url_launcher_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:13-37
 116            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-116-->[:url_launcher_android] C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-71
+116-->[:url_launcher_android] C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-71
 117
 118        <uses-library
 118-->[androidx.window:window:1.2.0] C:\Users\juliana\.gradle\caches\8.10.2\transforms\5093ab42d2307deb2d7ac0b7f5718c38\transformed\jetified-window-1.2.0\AndroidManifest.xml:23:9-25:40

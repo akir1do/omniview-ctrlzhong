@@ -23,18 +23,18 @@ com.example.flutter_application_1.app-jetified-lifecycle-process-2.7.0-21 C:\Use
 com.example.flutter_application_1.app-jetified-lifecycle-livedata-core-ktx-2.7.0-22 C:\Users\juliana\.gradle\caches\8.10.2\transforms\ebeb29d7113d60e59d5e0acf92f847f3\transformed\jetified-lifecycle-livedata-core-ktx-2.7.0\res
 com.example.flutter_application_1.app-jetified-annotation-experimental-1.4.0-23 C:\Users\juliana\.gradle\caches\8.10.2\transforms\f09a22cdd213028a38958888c7d16e20\transformed\jetified-annotation-experimental-1.4.0\res
 com.example.flutter_application_1.app-core-runtime-2.2.0-24 C:\Users\juliana\.gradle\caches\8.10.2\transforms\ff849810dfe34a0ab790c402787c149e\transformed\core-runtime-2.2.0\res
-com.example.flutter_application_1.app-debug-25 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\debug\res
-com.example.flutter_application_1.app-main-26 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\android\app\src\main\res
-com.example.flutter_application_1.app-pngs-27 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\app\generated\res\pngs\debug
-com.example.flutter_application_1.app-resValues-28 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\app\generated\res\resValues\debug
-com.example.flutter_application_1.app-packageDebugResources-29 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\app\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.flutter_application_1.app-packageDebugResources-30 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\app\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.flutter_application_1.app-debug-31 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\app\intermediates\merged_res\debug\mergeDebugResources
-com.example.flutter_application_1.app-debug-32 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\camera_android\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-33 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_email_sender\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-34 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-35 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\flutter_tts\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-36 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\image_picker_android\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-37 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\path_provider_android\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-38 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\permission_handler_android\intermediates\packaged_res\debug\packageDebugResources
-com.example.flutter_application_1.app-debug-39 C:\Users\juliana\Desktop\ied\omniview-ctrlzhong\build\url_launcher_android\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-25 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\debug\res
+com.example.flutter_application_1.app-main-26 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\android\app\src\main\res
+com.example.flutter_application_1.app-pngs-27 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\app\generated\res\pngs\debug
+com.example.flutter_application_1.app-resValues-28 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\app\generated\res\resValues\debug
+com.example.flutter_application_1.app-packageDebugResources-29 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\app\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.flutter_application_1.app-packageDebugResources-30 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\app\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.flutter_application_1.app-debug-31 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\app\intermediates\merged_res\debug\mergeDebugResources
+com.example.flutter_application_1.app-debug-32 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\camera_android\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-33 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_email_sender\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-34 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-35 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\flutter_tts\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-36 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\image_picker_android\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-37 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\path_provider_android\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-38 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\permission_handler_android\intermediates\packaged_res\debug\packageDebugResources
+com.example.flutter_application_1.app-debug-39 C:\Users\juliana\Desktop\another one\omniview-ctrlzhong\build\url_launcher_android\intermediates\packaged_res\debug\packageDebugResources

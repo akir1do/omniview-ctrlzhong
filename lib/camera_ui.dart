@@ -7,13 +7,15 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class CameraUI extends StatefulWidget {
+  const CameraUI({Key? key}) : super(key: key);
+
   @override
   _CameraUIState createState() => _CameraUIState();
 }
 
 class _CameraUIState extends State<CameraUI> {
   File? _selectedImage;
-  String _captionText = "";
+  String _detectedObjectsText = "";
   bool _isLoading = false;
   final FlutterTts _flutterTts = FlutterTts();
   final ImagePicker _picker = ImagePicker();
@@ -24,7 +26,6 @@ class _CameraUIState extends State<CameraUI> {
     super.dispose();
   }
 
-  // Request camera permission
   Future<void> _requestPermission() async {
     if (await Permission.camera.isDenied) {
       await Permission.camera.request();
@@ -34,7 +35,6 @@ class _CameraUIState extends State<CameraUI> {
     }
   }
 
-  // Pick image from the camera or gallery
   Future<void> _pickImage(ImageSource source) async {
     await _requestPermission();
 
@@ -43,22 +43,25 @@ class _CameraUIState extends State<CameraUI> {
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        _captionText = "";
+        _detectedObjectsText = "";
         _isLoading = true;
       });
       await _processImage(_selectedImage!);
+    } else {
+      setState(() {
+        _detectedObjectsText = 'No image selected.';
+        _isLoading = false;
+      });
     }
   }
 
-  // Process image for captioning
   Future<void> _processImage(File image) async {
-    await _sendImageForCaptioning(image);
+    await _sendImageForDetection(image);
   }
 
-  // Send image for captioning via HTTP
-  Future<void> _sendImageForCaptioning(File image) async {
+  Future<void> _sendImageForDetection(File image) async {
     try {
-      final uri = Uri.parse('http://192.168.1.10:5000/caption'); // Replace with your backend URL
+      final uri = Uri.parse('http://192.168.1.8:5000/caption'); // Update to /detect if needed
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -68,21 +71,21 @@ class _CameraUIState extends State<CameraUI> {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final Map<String, dynamic> data = json.decode(responseString);
-        final caption = data['caption'] ?? 'No caption received';
+        final detection = data['detected'] ?? 'No objects detected'; // updated key
 
         setState(() {
-          _captionText = caption;
+          _detectedObjectsText = detection;
         });
 
-        await _speakText(caption);
+        await _speakText(detection);
       } else {
         setState(() {
-          _captionText = 'Server error: ${response.statusCode}';
+          _detectedObjectsText = 'Server error: ${response.statusCode}';
         });
       }
     } catch (e) {
       setState(() {
-        _captionText = 'Failed to connect to server.';
+        _detectedObjectsText = 'Failed to connect to server: $e';
       });
     } finally {
       setState(() {
@@ -91,7 +94,6 @@ class _CameraUIState extends State<CameraUI> {
     }
   }
 
-  // Speak out the caption using TTS
   Future<void> _speakText(String text) async {
     await _flutterTts.setLanguage("en-US");
     await _flutterTts.setPitch(1.0);
@@ -102,22 +104,20 @@ class _CameraUIState extends State<CameraUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camera and Captioning'),
+        title: const Text('Camera and Object Detection'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Display selected image
             if (_selectedImage != null)
               Image.file(_selectedImage!, height: 200, width: 200, fit: BoxFit.cover)
             else
-              Text('No image selected'),
+              const Text('No image selected'),
 
             const SizedBox(height: 20),
 
-            // Buttons for taking photo and selecting from gallery
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -136,11 +136,20 @@ class _CameraUIState extends State<CameraUI> {
 
             const SizedBox(height: 20),
 
-            // Loading indicator or caption text
             if (_isLoading)
-              CircularProgressIndicator()
-            else if (_captionText.isNotEmpty)
-              Text('Caption: $_captionText', textAlign: TextAlign.center),
+              const CircularProgressIndicator()
+            else if (_detectedObjectsText.isNotEmpty)
+              Column(
+                children: [
+                  Text('Detected Objects: $_detectedObjectsText', textAlign: TextAlign.center),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                    onPressed: () => _speakText(_detectedObjectsText),
+                    icon: const Icon(Icons.volume_up),
+                    label: const Text('Repeat Detection Audio'),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
