@@ -1,2 +1,0 @@
-com.sidlatau.flutteremailsender
-xml shared_file_paths

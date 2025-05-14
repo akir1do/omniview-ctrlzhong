@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'selection_screen.dart'; // Add import for selection_screen.dart
 
-// Height and distance constants for easy editing
-const double kFieldSpacing = 20; // <-- Edit spacing between fields here
-const double kTopSpacing = 32; // <-- Edit top spacing here
-const double kButtonSpacing = 32; // <-- Edit spacing above button here
+const double kFieldSpacing = 20;
+const double kTopSpacing = 32;
+const double kButtonSpacing = 32;
 
 class LoginUI extends StatefulWidget {
   const LoginUI({Key? key}) : super(key: key);
@@ -13,14 +12,13 @@ class LoginUI extends StatefulWidget {
   State<LoginUI> createState() => _LoginUIState();
 }
 
-//Empty user name or password checker
 class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
-  String? _errorMessage; // <-- For error message
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -56,18 +54,11 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
         _errorMessage = 'Please input your password.';
       } else {
         _errorMessage = null;
-        // Navigate to WelcomeScreen with fade animation
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder:
-                (context, animation, secondaryAnimation) =>
-                    WelcomeScreen(username: username),
-            transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-            ) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                WelcomeScreen(username: username),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },
             transitionDuration: const Duration(milliseconds: 700),
@@ -77,7 +68,6 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
     });
   }
 
-  //Padding field
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +91,6 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const WelcomeTopLeftText(),
-                  // To change the position
                   const SizedBox(height: 92),
                   const Text(
                     'Please enter your username and password',
@@ -134,7 +123,6 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
                   ),
                   SizedBox(height: kButtonSpacing),
                   _LoginButton(onPressed: _handleLogin),
-                  // Add space between Login button and Forgot Password link
                   SizedBox(height: 20),
                   Align(
                     alignment: Alignment.centerRight,
@@ -149,12 +137,7 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(
-                          color: Color.fromARGB(
-                            255,
-                            64,
-                            46,
-                            104,
-                          ), // Dark purple
+                          color: Color.fromARGB(255, 64, 46, 104),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -170,7 +153,6 @@ class _LoginUIState extends State<LoginUI> with SingleTickerProviderStateMixin {
   }
 }
 
-//username box
 class _UsernameField extends StatelessWidget {
   final TextEditingController controller;
   const _UsernameField({required this.controller});
@@ -189,7 +171,6 @@ class _UsernameField extends StatelessWidget {
   }
 }
 
-//password box
 class _PasswordField extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
@@ -222,7 +203,6 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
-//login box
 class _LoginButton extends StatelessWidget {
   final VoidCallback onPressed;
   const _LoginButton({required this.onPressed});
@@ -244,7 +224,6 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
-//welcome animation
 class WelcomeScreen extends StatefulWidget {
   final String username;
   const WelcomeScreen({Key? key, required this.username}) : super(key: key);
@@ -289,10 +268,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void _goToCameraUI() {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder:
-            (context, animation, secondaryAnimation) => SelectionScreen(
-              username: widget.username,
-            ), // Go to selection screen
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            SelectionScreen(username: widget.username),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -327,7 +304,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 }
 
-// --- Forgot Password Area ---
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
@@ -345,10 +321,8 @@ class ForgotPasswordScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, // <-- Adjust vertical position here
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Title
               const Text(
                 'Forgot Password',
                 style: TextStyle(
@@ -356,23 +330,17 @@ class ForgotPasswordScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 64, 46, 104),
                 ),
-                textAlign:
-                    TextAlign.center, // <-- Adjust horizontal position here
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              // Instruction
               const Text(
                 'Enter your email address and we will send a code shortly',
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              // Email input and Send button
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(12),
@@ -387,7 +355,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         decoration: const InputDecoration(
                           hintText: 'Email address',
                           border: InputBorder.none,
-                          isDense: true, // Make TextField more compact
+                          isDense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 14),
                         ),
                       ),
@@ -396,19 +364,29 @@ class ForgotPasswordScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: SizedBox(
-                        height: 50, // Match the height of the TextField
+                        height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: Implement send code logic
+                            final email = emailController.text.trim();
+                            if (email.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please enter your email address.'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Verification code sent to $email'),
+                                  backgroundColor: const Color.fromARGB(255, 64, 46, 104),
+                                ),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(
-                              255,
-                              64,
-                              46,
-                              104,
-                            ), // Dark purple
-                            padding: EdgeInsets.zero, // Remove default padding
+                            backgroundColor: const Color.fromARGB(255, 64, 46, 104),
+                            padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -435,10 +413,8 @@ class ForgotPasswordScreen extends StatelessWidget {
 }
 
 class WelcomeTopLeftText extends StatelessWidget {
-  // To change the vertical position, adjust the 'topPadding' parameter.
   final double topPadding;
-  const WelcomeTopLeftText({Key? key, this.topPadding = 10.0})
-    : super(key: key);
+  const WelcomeTopLeftText({Key? key, this.topPadding = 10.0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -446,12 +422,12 @@ class WelcomeTopLeftText extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Padding(
         padding: EdgeInsets.only(top: topPadding, left: 10.0),
-        child: Text(
+        child: const Text(
           'Welcome!',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 64, 46, 104), // Dark purple
+            color: Color.fromARGB(255, 64, 46, 104),
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

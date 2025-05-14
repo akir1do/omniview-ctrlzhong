@@ -22,17 +22,15 @@ class SelectionScreen extends StatelessWidget {
               right: 16,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-                transitionBuilder:
-                    (child, anim) =>
-                        RotationTransition(turns: anim, child: child),
+                transitionBuilder: (child, anim) =>
+                    RotationTransition(turns: anim, child: child),
                 child: IconButton(
                   key: ValueKey(isDark),
                   icon: Icon(
                     isDark ? Icons.wb_sunny : Icons.nightlight_round,
-                    color:
-                        isDark
-                            ? Colors.yellow[600]
-                            : const Color.fromARGB(255, 64, 46, 104),
+                    color: isDark
+                        ? Colors.yellow[600]
+                        : const Color.fromARGB(255, 64, 46, 104),
                     size: 32,
                   ),
                   onPressed: () => themeNotifier.toggle(),
@@ -52,10 +50,9 @@ class SelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.bold,
-                      color:
-                          isDark
-                              ? Colors.white
-                              : const Color.fromARGB(255, 64, 46, 104),
+                      color: isDark
+                          ? Colors.white
+                          : const Color.fromARGB(255, 64, 46, 104),
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -88,23 +85,21 @@ class SelectionScreen extends StatelessWidget {
                   onTap: () {
                     showDialog(
                       context: context,
-                      builder:
-                          (context) => AlertDialog(
-                            title: const Text('Help'),
-                            content: const Text(
-                              'OmniView+ is an app that will be the 2nd eye for people and world. With advance AI analysis we can offer you a lens that will help you identify whats in front of you and help with the visual impairness.\n\n- Click the moon icon to change themes\n- You can switch modes in camera',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('OK'),
-                              ),
-                            ],
+                      builder: (context) => AlertDialog(
+                        title: const Text('Help'),
+                        content: const Text(
+                          'OmniView+ is an app that will be the 2nd eye for people and world. With advance AI analysis we can offer you a lens that will help you identify whats in front of you and help with the visual impairness.\n\n- Click the moon icon to change themes\n- You can switch modes in camera',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('OK'),
                           ),
+                        ],
+                      ),
                     );
                   },
                 ),
-
                 _SelectionBox(
                   label: 'Logout',
                   isDark: isDark,
@@ -157,7 +152,7 @@ class _SelectionBox extends StatelessWidget {
             boxShadow: [
               if (!isDark)
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withAlpha((0.08 * 255).round()),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -195,7 +190,6 @@ class Design extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Yellow tints for dark mode, original for light
     final starColors = [
       isDark ? Colors.yellow[700] : const Color(0xFFB39DDB),
       isDark ? Colors.yellow[600] : const Color(0xFF9575CD),
@@ -208,7 +202,6 @@ class Design extends StatelessWidget {
       height: 120,
       child: Stack(
         children: [
-          // Star 1
           Positioned(
             left: 30,
             top: 40,
@@ -217,7 +210,6 @@ class Design extends StatelessWidget {
               child: Icon(Icons.star, size: 32, color: starColors[0]),
             ),
           ),
-          // Star 2
           Positioned(
             left: 80,
             top: 10,
@@ -226,7 +218,6 @@ class Design extends StatelessWidget {
               child: Icon(Icons.star, size: 24, color: starColors[1]),
             ),
           ),
-          // Star 3
           Positioned(
             right: 60,
             top: 30,
@@ -235,7 +226,6 @@ class Design extends StatelessWidget {
               child: Icon(Icons.star, size: 40, color: starColors[2]),
             ),
           ),
-          // Star 4
           Positioned(
             right: 20,
             top: 60,
@@ -244,7 +234,6 @@ class Design extends StatelessWidget {
               child: Icon(Icons.star, size: 18, color: starColors[3]),
             ),
           ),
-          // Star 5
           Positioned(
             left: 140,
             top: 60,
@@ -253,7 +242,6 @@ class Design extends StatelessWidget {
               child: Icon(Icons.star, size: 28, color: starColors[4]),
             ),
           ),
-          // Star 6
           Positioned(
             right: 120,
             top: 80,
