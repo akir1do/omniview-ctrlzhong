@@ -18,6 +18,8 @@ class _CameraUIState extends State<CameraUI> {
   String _detectionResultText = '';
   String _ocrText = '';
   bool _isLoading = false;
+  List<Map<String, String>> _followUpQA = [];
+
   final FlutterTts _flutterTts = FlutterTts();
   final ImagePicker _picker = ImagePicker();
 
@@ -28,12 +30,9 @@ class _CameraUIState extends State<CameraUI> {
   }
 
   Future<void> _requestPermission() async {
-    if (await Permission.camera.isDenied) {
-      await Permission.camera.request();
-    }
-    if (await Permission.storage.isDenied) {
-      await Permission.storage.request();
-    }
+    await Permission.camera.request();
+    await Permission.photos.request();
+    await Permission.storage.request();
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -45,25 +44,24 @@ class _CameraUIState extends State<CameraUI> {
         _selectedImage = File(pickedFile.path);
         _detectionResultText = '';
         _ocrText = '';
+        _followUpQA = [];
         _isLoading = false;
       });
     } else {
       setState(() {
         _detectionResultText = 'No image selected.';
         _ocrText = '';
+        _followUpQA = [];
         _isLoading = false;
       });
     }
   }
 
   Future<void> _sendImageForObjectDetection(File image) async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
       final uri = Uri.parse('http://192.168.1.11:5000/detect');
-
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
 
@@ -72,12 +70,26 @@ class _CameraUIState extends State<CameraUI> {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final data = json.decode(responseString);
-        final detectedObjects = (data['detected_objects'] as List<dynamic>?)
-                ?.join(', ') ??
+
+        final detectedObjects =
+            (data['detected_objects'] as List<dynamic>?)?.join(', ') ??
             'No objects detected';
+
+        final followupList =
+            data['followups'] != null
+                ? List<Map<String, String>>.from(
+                  data['followups'].map<Map<String, String>>(
+                    (item) => {
+                      'question': item['question'].toString(),
+                      'answer': item['answer'].toString(),
+                    },
+                  ),
+                )
+                : <Map<String, String>>[];
 
         setState(() {
           _detectionResultText = detectedObjects;
+          _followUpQA = followupList;
         });
 
         await _speakText(detectedObjects);
@@ -91,20 +103,15 @@ class _CameraUIState extends State<CameraUI> {
         _detectionResultText = 'Failed to connect to server: $e';
       });
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
   Future<void> _sendImageForOCR(File image) async {
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
       final uri = Uri.parse('http://192.168.1.11:5000/ocr');
-
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
 
@@ -113,6 +120,7 @@ class _CameraUIState extends State<CameraUI> {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final data = json.decode(responseString);
+
         final ocrText = data['ocr_text'] ?? 'No text detected';
 
         setState(() {
@@ -130,9 +138,7 @@ class _CameraUIState extends State<CameraUI> {
         _ocrText = 'Failed to connect to server: $e';
       });
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
@@ -150,11 +156,14 @@ class _CameraUIState extends State<CameraUI> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (_selectedImage != null)
-                Image.file(_selectedImage!,
-                    height: 200, width: 200, fit: BoxFit.cover)
+                Image.file(
+                  _selectedImage!,
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.cover,
+                )
               else
                 const Text('No image selected'),
 
@@ -182,17 +191,19 @@ class _CameraUIState extends State<CameraUI> {
                 const CircularProgressIndicator()
               else ...[
                 ElevatedButton.icon(
-                  onPressed: _selectedImage != null
-                      ? () => _sendImageForObjectDetection(_selectedImage!)
-                      : null,
+                  onPressed:
+                      _selectedImage != null
+                          ? () => _sendImageForObjectDetection(_selectedImage!)
+                          : null,
                   icon: const Icon(Icons.camera_enhance),
                   label: const Text('Detect Objects (YOLOv5)'),
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: _selectedImage != null
-                      ? () => _sendImageForOCR(_selectedImage!)
-                      : null,
+                  onPressed:
+                      _selectedImage != null
+                          ? () => _sendImageForOCR(_selectedImage!)
+                          : null,
                   icon: const Icon(Icons.text_fields),
                   label: const Text('Extract Text (OCR)'),
                 ),
@@ -204,9 +215,13 @@ class _CameraUIState extends State<CameraUI> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Detected Objects:',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text(
+                      'Detected Objects:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                     Text(_detectionResultText),
                     ElevatedButton.icon(
                       onPressed: () => _speakText(_detectionResultText),
@@ -221,9 +236,13 @@ class _CameraUIState extends State<CameraUI> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    const Text('OCR Text:',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text(
+                      'OCR Text:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                     Text(_ocrText),
                     ElevatedButton.icon(
                       onPressed: () => _speakText(_ocrText),
@@ -232,6 +251,32 @@ class _CameraUIState extends State<CameraUI> {
                     ),
                   ],
                 ),
+
+              if (_followUpQA.isNotEmpty) ...[
+                const SizedBox(height: 20),
+                const Text(
+                  'AI Follow-Up Questions:',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                ..._followUpQA.map(
+                  (qa) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Q: ${qa['question']}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text("A: ${qa['answer']}"),
+                      TextButton.icon(
+                        onPressed: () => _speakText(qa['answer'] ?? ''),
+                        icon: const Icon(Icons.volume_up),
+                        label: const Text("Speak Answer"),
+                      ),
+                      const Divider(),
+                    ],
+                  ),
+                ),
+              ],
             ],
           ),
         ),
