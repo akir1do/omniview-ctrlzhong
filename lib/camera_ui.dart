@@ -15,7 +15,7 @@ class CameraUI extends StatefulWidget {
 
 class _CameraUIState extends State<CameraUI> {
   File? _selectedImage;
-  String _detectedObjectsText = "";
+  String _detectionResultText = "";
   bool _isLoading = false;
   final FlutterTts _flutterTts = FlutterTts();
   final ImagePicker _picker = ImagePicker();
@@ -43,13 +43,13 @@ class _CameraUIState extends State<CameraUI> {
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        _detectedObjectsText = "";
+        _detectionResultText = "";
         _isLoading = true;
       });
       await _processImage(_selectedImage!);
     } else {
       setState(() {
-        _detectedObjectsText = 'No image selected.';
+        _detectionResultText = 'No image selected.';
         _isLoading = false;
       });
     }
@@ -61,7 +61,9 @@ class _CameraUIState extends State<CameraUI> {
 
   Future<void> _sendImageForDetection(File image) async {
     try {
-      final uri = Uri.parse('http://192.168.1.8:5000/caption'); // Update to /detect if needed
+      final uri = Uri.parse(
+        'http://localhost:5000/caption',
+      ); // Replace with your backend IP
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -71,21 +73,27 @@ class _CameraUIState extends State<CameraUI> {
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
         final Map<String, dynamic> data = json.decode(responseString);
-        final detection = data['detected'] ?? 'No objects detected'; // updated key
+
+        final detectedObjects =
+            (data['detected_objects'] as List<dynamic>?)?.join(', ') ??
+            'No objects detected';
+        final ocrText = data['ocr_text'] ?? 'No text detected';
+
+        final combinedText = "Objects: $detectedObjects\nText: $ocrText";
 
         setState(() {
-          _detectedObjectsText = detection;
+          _detectionResultText = combinedText;
         });
 
-        await _speakText(detection);
+        await _speakText(combinedText);
       } else {
         setState(() {
-          _detectedObjectsText = 'Server error: ${response.statusCode}';
+          _detectionResultText = 'Server error: ${response.statusCode}';
         });
       }
     } catch (e) {
       setState(() {
-        _detectedObjectsText = 'Failed to connect to server: $e';
+        _detectionResultText = 'Failed to connect to server: $e';
       });
     } finally {
       setState(() {
@@ -103,54 +111,71 @@ class _CameraUIState extends State<CameraUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Camera and Object Detection'),
-      ),
+      appBar: AppBar(title: const Text('Image Detection & OCR')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_selectedImage != null)
-              Image.file(_selectedImage!, height: 200, width: 200, fit: BoxFit.cover)
-            else
-              const Text('No image selected'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_selectedImage != null)
+                Image.file(
+                  _selectedImage!,
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.cover,
+                )
+              else
+                const Text('No image selected'),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text('Camera'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                  icon: const Icon(Icons.photo),
-                  label: const Text('Gallery'),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            if (_isLoading)
-              const CircularProgressIndicator()
-            else if (_detectedObjectsText.isNotEmpty)
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Detected Objects: $_detectedObjectsText', textAlign: TextAlign.center),
-                  const SizedBox(height: 10),
                   ElevatedButton.icon(
-                    onPressed: () => _speakText(_detectedObjectsText),
-                    icon: const Icon(Icons.volume_up),
-                    label: const Text('Repeat Detection Audio'),
+                    onPressed: () => _pickImage(ImageSource.camera),
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Camera'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                    icon: const Icon(Icons.photo),
+                    label: const Text('Gallery'),
                   ),
                 ],
               ),
-          ],
+
+              const SizedBox(height: 20),
+
+              if (_isLoading)
+                const CircularProgressIndicator()
+              else if (_detectionResultText.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Detection Result:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      _detectionResultText,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: () => _speakText(_detectionResultText),
+                      icon: const Icon(Icons.volume_up),
+                      label: const Text('Speak Result'),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
