@@ -22,15 +22,22 @@ class SelectionScreen extends StatelessWidget {
               right: 16,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-                transitionBuilder: (child, anim) => RotationTransition(turns: anim, child: child),
+                transitionBuilder:
+                    (child, anim) =>
+                        RotationTransition(turns: anim, child: child),
                 child: IconButton(
                   key: ValueKey(isDark),
-                  icon: Icon(isDark ? Icons.wb_sunny : Icons.nightlight_round,
-                    color: isDark ? Colors.yellow[600] : const Color.fromARGB(255, 64, 46, 104),
+                  icon: Icon(
+                    isDark ? Icons.wb_sunny : Icons.nightlight_round,
+                    color:
+                        isDark
+                            ? Colors.yellow[600]
+                            : const Color.fromARGB(255, 64, 46, 104),
                     size: 32,
                   ),
                   onPressed: () => themeNotifier.toggle(),
-                  tooltip: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                  tooltip:
+                      isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
                 ),
               ),
             ),
@@ -45,7 +52,10 @@ class SelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : const Color.fromARGB(255, 64, 46, 104),
+                      color:
+                          isDark
+                              ? Colors.white
+                              : const Color.fromARGB(255, 64, 46, 104),
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -66,7 +76,9 @@ class SelectionScreen extends StatelessWidget {
                   isDark: isDark,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SubscriptionTiersScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const SubscriptionTiersScreen(),
+                      ),
                     );
                   },
                 ),
@@ -76,26 +88,23 @@ class SelectionScreen extends StatelessWidget {
                   onTap: () {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Help'),
-                        content: const Text(
-                          'OmniView+ is an app that will be the 2nd eye for people and world. With advance AI analysis we can offer you a lens that will help you identify whats in front of you and help with the visual impairness.\n\n- Click the moon icon to change themes\n- You can switch modes in camera',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('OK'),
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Help'),
+                            content: const Text(
+                              'OmniView+ is an app that will be the 2nd eye for people and world. With advance AI analysis we can offer you a lens that will help you identify whats in front of you and help with the visual impairness.\n\n- Click the moon icon to change themes\n- You can switch modes in camera',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('OK'),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                     );
                   },
                 ),
-                _SelectionBox(
-                  label: 'Settings',
-                  isDark: isDark,
-                  onTap: () {},
-                ),
+
                 _SelectionBox(
                   label: 'Logout',
                   isDark: isDark,
@@ -171,10 +180,7 @@ class _SelectionBox extends StatelessWidget {
                   ),
                 ),
               ),
-              if (trailing != null) ...[
-                trailing!,
-                const SizedBox(width: 28),
-              ],
+              if (trailing != null) ...[trailing!, const SizedBox(width: 28)],
             ],
           ),
         ),
