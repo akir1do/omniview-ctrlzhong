@@ -123,8 +123,21 @@ class _CameraUIState extends State<CameraUI> {
 
         final ocrText = data['ocr_text'] ?? 'No text detected';
 
+        final followupList =
+            data['followups'] != null
+                ? List<Map<String, String>>.from(
+                  data['followups'].map<Map<String, String>>(
+                    (item) => {
+                      'question': item['question'].toString(),
+                      'answer': item['answer'].toString(),
+                    },
+                  ),
+                )
+                : <Map<String, String>>[];
+
         setState(() {
           _ocrText = ocrText;
+          _followUpQA = followupList;
         });
 
         await _speakText(ocrText);
