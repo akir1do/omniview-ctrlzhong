@@ -15,8 +15,8 @@ class CameraUI extends StatefulWidget {
 
 class _CameraUIState extends State<CameraUI> {
   File? _selectedImage;
-  String _detectedObjectsText = "";
-  String _ocrText = "";
+  String _detectionResultText = '';
+  String _ocrText = '';
   bool _isLoading = false;
   final FlutterTts _flutterTts = FlutterTts();
   final ImagePicker _picker = ImagePicker();
@@ -27,7 +27,6 @@ class _CameraUIState extends State<CameraUI> {
     super.dispose();
   }
 
-  // Request camera and storage permissions
   Future<void> _requestPermission() async {
     if (await Permission.camera.isDenied) {
       await Permission.camera.request();
@@ -37,32 +36,33 @@ class _CameraUIState extends State<CameraUI> {
     }
   }
 
-  // Pick image from camera or gallery
   Future<void> _pickImage(ImageSource source) async {
     await _requestPermission();
-
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        _detectedObjectsText = ""; // Clear previous detected objects
-        _ocrText = ""; // Clear previous OCR text
-        _isLoading = false; // Reset loading state
+        _detectionResultText = '';
+        _ocrText = '';
+        _isLoading = false;
       });
     } else {
       setState(() {
-        _detectedObjectsText = 'No image selected.';
-        _ocrText = ""; // Clear OCR text
+        _detectionResultText = 'No image selected.';
+        _ocrText = '';
         _isLoading = false;
       });
     }
   }
 
-  // YOLOv5 object detection
   Future<void> _sendImageForObjectDetection(File image) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      final uri = Uri.parse('http://192.168.1.8:5000/detect'); // Replace with your Flask server's IP
+      final uri = Uri.parse('http://192.168.1.11:5000/detect');
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -71,22 +71,24 @@ class _CameraUIState extends State<CameraUI> {
 
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
-        final Map<String, dynamic> data = json.decode(responseString);
-        final detection = data['detected_objects'] ?? 'No objects detected'; // Adjust based on backend
+        final data = json.decode(responseString);
+        final detectedObjects = (data['detected_objects'] as List<dynamic>?)
+                ?.join(', ') ??
+            'No objects detected';
 
         setState(() {
-          _detectedObjectsText = detection;
+          _detectionResultText = detectedObjects;
         });
 
-        await _speakText(detection);
+        await _speakText(detectedObjects);
       } else {
         setState(() {
-          _detectedObjectsText = 'Server error: ${response.statusCode}';
+          _detectionResultText = 'Server error: ${response.statusCode}';
         });
       }
     } catch (e) {
       setState(() {
-        _detectedObjectsText = 'Failed to connect to server: $e';
+        _detectionResultText = 'Failed to connect to server: $e';
       });
     } finally {
       setState(() {
@@ -95,11 +97,13 @@ class _CameraUIState extends State<CameraUI> {
     }
   }
 
-  // OCR (Optical Character Recognition)
   Future<void> _sendImageForOCR(File image) async {
-    try {
-      final uri = Uri.parse('http://192.168.1.8:5000/ocr'); // Ensure this IP and port are correct
+    setState(() {
+      _isLoading = true;
+    });
 
+    try {
+      final uri = Uri.parse('http://192.168.1.11:5000/ocr');
 
       var request = http.MultipartRequest('POST', uri)
         ..files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -108,8 +112,8 @@ class _CameraUIState extends State<CameraUI> {
 
       if (response.statusCode == 200) {
         final responseString = await response.stream.bytesToString();
-        final Map<String, dynamic> data = json.decode(responseString);
-        final ocrText = data['ocr_text'] ?? 'No text detected'; // Adjust based on backend
+        final data = json.decode(responseString);
+        final ocrText = data['ocr_text'] ?? 'No text detected';
 
         setState(() {
           _ocrText = ocrText;
@@ -132,7 +136,6 @@ class _CameraUIState extends State<CameraUI> {
     }
   }
 
-  // Speak text using Flutter TTS
   Future<void> _speakText(String text) async {
     await _flutterTts.setLanguage("en-US");
     await _flutterTts.setPitch(1.0);
@@ -142,88 +145,95 @@ class _CameraUIState extends State<CameraUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Camera and Detection Options'),
-      ),
+      appBar: AppBar(title: const Text('Image Detection & OCR')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_selectedImage != null)
-              Image.file(_selectedImage!, height: 200, width: 200, fit: BoxFit.cover)
-            else
-              const Text('No image selected'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_selectedImage != null)
+                Image.file(_selectedImage!,
+                    height: 200, width: 200, fit: BoxFit.cover)
+              else
+                const Text('No image selected'),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => _pickImage(ImageSource.camera),
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Camera'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                    icon: const Icon(Icons.photo),
+                    label: const Text('Gallery'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              if (_isLoading)
+                const CircularProgressIndicator()
+              else ...[
                 ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text('Camera'),
+                  onPressed: _selectedImage != null
+                      ? () => _sendImageForObjectDetection(_selectedImage!)
+                      : null,
+                  icon: const Icon(Icons.camera_enhance),
+                  label: const Text('Detect Objects (YOLOv5)'),
                 ),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                  icon: const Icon(Icons.photo),
-                  label: const Text('Gallery'),
+                  onPressed: _selectedImage != null
+                      ? () => _sendImageForOCR(_selectedImage!)
+                      : null,
+                  icon: const Icon(Icons.text_fields),
+                  label: const Text('Extract Text (OCR)'),
                 ),
               ],
-            ),
-
-            const SizedBox(height: 20),
-
-            if (_isLoading)
-              const CircularProgressIndicator()
-            else ...[
-              // YOLOv5 Button
-              ElevatedButton.icon(
-                onPressed: _selectedImage != null
-                    ? () {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        _sendImageForObjectDetection(_selectedImage!);
-                      }
-                    : null,
-                icon: const Icon(Icons.camera_enhance),
-                label: const Text('Detect Objects with YOLOv5'),
-              ),
-              const SizedBox(height: 20),
-
-              // OCR Button
-              ElevatedButton.icon(
-                onPressed: _selectedImage != null
-                    ? () {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        _sendImageForOCR(_selectedImage!);
-                      }
-                    : null,
-                icon: const Icon(Icons.text_fields),
-                label: const Text('Extract Text with OCR'),
-              ),
 
               const SizedBox(height: 20),
 
-              if (_detectedObjectsText.isNotEmpty)
-                Text('Detected Objects: $_detectedObjectsText', textAlign: TextAlign.center),
+              if (_detectionResultText.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Detected Objects:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text(_detectionResultText),
+                    ElevatedButton.icon(
+                      onPressed: () => _speakText(_detectionResultText),
+                      icon: const Icon(Icons.volume_up),
+                      label: const Text('Repeat Object Detection'),
+                    ),
+                  ],
+                ),
 
               if (_ocrText.isNotEmpty)
-                Text('OCR Text: $_ocrText', textAlign: TextAlign.center),
-
-              const SizedBox(height: 10),
-              if (_ocrText.isNotEmpty || _detectedObjectsText.isNotEmpty)
-                ElevatedButton.icon(
-                  onPressed: () => _speakText(_ocrText.isNotEmpty ? _ocrText : _detectedObjectsText),
-                  icon: const Icon(Icons.volume_up),
-                  label: const Text('Repeat Detection Audio'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text('OCR Text:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text(_ocrText),
+                    ElevatedButton.icon(
+                      onPressed: () => _speakText(_ocrText),
+                      icon: const Icon(Icons.volume_up),
+                      label: const Text('Repeat OCR Result'),
+                    ),
+                  ],
                 ),
             ],
-          ],
+          ),
         ),
       ),
     );

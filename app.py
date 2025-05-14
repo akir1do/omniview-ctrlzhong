@@ -4,18 +4,14 @@ import numpy as np
 from PIL import Image
 import pytesseract
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Set this if you're on Windows (update the path accordingly)
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Load the YOLOv5 model
+model = YOLO('yolov5s.pt')  # Ensure the path is correct and model exists
 
-# Load YOLO model
-model = YOLO('yolov5s.pt')
-
-@app.route('/detect', methods=['POST'])
+@app.route('/caption', methods=['POST'])  # You can also rename this to '/detect'
 def detect():
     try:
         if 'image' not in request.files:
@@ -23,20 +19,23 @@ def detect():
 
         file = request.files['image']
         image = Image.open(file.stream).convert('RGB')
+        image = np.array(image)
 
-        # YOLO detection
-        results = model(np.array(image))
+        results = model(image)
+
+        boxes = results[0].boxes.xyxy.cpu().numpy().tolist()
+        labels = results[0].boxes.cls.cpu().numpy().tolist()
+        confidences = results[0].boxes.conf.cpu().numpy().tolist()
+
         class_names = model.names
-        label_names = [class_names[int(cls)] for cls in results[0].boxes.cls.cpu().numpy()]
+        label_names = [class_names[int(cls)] for cls in labels]
         detected_text = ", ".join(label_names)
 
-        # OCR with Tesseract
-        ocr_text = pytesseract.image_to_string(image)
-        print("OCR Text:", ocr_text)  # Log to check if OCR is working
-
         return jsonify({
-            'detected_objects': detected_text if detected_text else "No objects detected",
-            'ocr_text': ocr_text if ocr_text.strip() else "No text detected"
+            'detected': detected_text,
+            'boxes': boxes,
+            'labels': label_names,
+            'confidences': confidences
         })
 
     except Exception as e:
