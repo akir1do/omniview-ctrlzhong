@@ -9,16 +9,15 @@ import openai
 app = Flask(__name__)
 CORS(app)
 
-# Load YOLOv5 model
+# Load YOLO model
 model = YOLO('yolov5s.pt')
 
 # Set your OpenAI API key
-openai.api_key = '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'  # Replace this with your real key
+openai.api_key = 'YOUR_API_KEY_HERE'  # 🔒 Replace with your actual key
 
-def generate_followups(label_names, ocr_text):
-    try:
-        prompt = f"""You are an assistant that analyzes images.
-The image contains objects: {', '.join(label_names) if label_names else 'None'}.
+def generate_followup_questions(objects, ocr_text):
+    prompt = f"""You are an assistant that analyzes images.
+The image contains objects: {', '.join(objects) if objects else 'None'}.
 The extracted text from the image is: "{ocr_text}".
 Generate 3 relevant questions and their answers based on this image.
 
@@ -26,31 +25,28 @@ Format:
 - Question: ...
   Answer: ...
 """
-        response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
-            messages=[
-                {"role": "system", "content": "You are an intelligent image analysis assistant."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=500
-        )
+    response = openai.ChatCompletion.create(
+        model='gpt-3.5-turbo',
+        messages=[
+            {"role": "system", "content": "You are an intelligent image analysis assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=500
+    )
 
-        content = response['choices'][0]['message']['content']
-        lines = content.strip().split('\n')
-        qa_list = []
-        question = None
-        for line in lines:
-            if line.lower().startswith('question:'):
-                question = line[len('question:'):].strip()
-            elif line.lower().startswith('answer:') and question:
-                answer = line[len('answer:'):].strip()
-                qa_list.append({'question': question, 'answer': answer})
-                question = None
-        return qa_list
-    except Exception as e:
-        print("Followup generation error:", e)
-        return []
+    content = response['choices'][0]['message']['content']
+    lines = content.strip().split('\n')
+    qa_list = []
+    question = None
+    for line in lines:
+        if line.lower().startswith('question:'):
+            question = line[len('question:'):].strip()
+        elif line.lower().startswith('answer:') and question:
+            answer = line[len('answer:'):].strip()
+            qa_list.append({'question': question, 'answer': answer})
+            question = None
+    return qa_list
 
 @app.route('/detect', methods=['POST'])
 def detect():
@@ -63,6 +59,7 @@ def detect():
         image_np = np.array(image)
 
         results = model(image_np)
+
         boxes = results[0].boxes.xyxy.cpu().numpy().tolist()
         labels = results[0].boxes.cls.cpu().numpy().tolist()
         confidences = results[0].boxes.conf.cpu().numpy().tolist()
@@ -70,8 +67,11 @@ def detect():
         class_names = model.names
         label_names = [class_names[int(cls)] for cls in labels]
 
+        # OCR
         ocr_text = pytesseract.image_to_string(image).strip()
-        followups = generate_followups(label_names, ocr_text)
+
+        # Generate follow-up questions
+        followups = generate_followup_questions(label_names, ocr_text)
 
         return jsonify({
             'detected_objects': label_names,
@@ -93,9 +93,18 @@ def ocr():
 
         file = request.files['image']
         image = Image.open(file.stream).convert('RGB')
+
         ocr_text = pytesseract.image_to_string(image).strip()
 
-        followups = generate_followups([], ocr_text)
+        # Detect objects (for follow-up context)
+        image_np = np.array(image)
+        results = model(image_np)
+        labels = results[0].boxes.cls.cpu().numpy().tolist()
+        class_names = model.names
+        label_names = [class_names[int(cls)] for cls in labels]
+
+        # Generate follow-up questions
+        followups = generate_followup_questions(label_names, ocr_text)
 
         return jsonify({
             'ocr_text': ocr_text,
