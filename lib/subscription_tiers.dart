@@ -15,7 +15,6 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
   @override
   void initState() {
     super.initState();
-    // No need to load or save theme from SharedPreferences
   }
 
   final List<Map<String, dynamic>> tiers = [
@@ -101,7 +100,7 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                             border: Border.all(color: borderColor, width: 2),
                             boxShadow: [
                               BoxShadow(
-                                color: borderColor.withOpacity(0.08),
+                                color: borderColor.withAlpha(20), // Fixed: Replaced deprecated withOpacity
                                 blurRadius: 8,
                                 spreadRadius: 1,
                                 offset: const Offset(0, 3),
@@ -124,7 +123,7 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                                 const SizedBox(height: 16),
                                 Text(
                                   tier['desc'],
-                                  style: TextStyle(fontSize: 16, color: textColor.withOpacity(0.8)),
+                                  style: TextStyle(fontSize: 16, color: textColor.withAlpha((0.8 * 255).round())), // fixed
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 32),

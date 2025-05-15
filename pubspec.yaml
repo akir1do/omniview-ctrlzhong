@@ -23,10 +23,6 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
 
-
-  # Add other necessary dependencies here, such as image processing libraries
-  # For YOLOv5 integration, you might need dependencies like 'flutter_tesseract_ocr' or 'provider'
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
