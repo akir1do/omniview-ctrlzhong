@@ -90,6 +90,7 @@ class _CameraUIState extends State<CameraUI> {
         setState(() {
           _detectionResultText = detectedObjects;
           _followUpQA = followupList;
+          _ocrText = ''; // Clear OCR text to avoid confusion
         });
 
         await _speakText(detectedObjects);
@@ -138,6 +139,7 @@ class _CameraUIState extends State<CameraUI> {
         setState(() {
           _ocrText = ocrText;
           _followUpQA = followupList;
+          _detectionResultText = ''; // Clear detection text to avoid confusion
         });
 
         await _speakText(ocrText);
@@ -149,6 +151,55 @@ class _CameraUIState extends State<CameraUI> {
     } catch (e) {
       setState(() {
         _ocrText = 'Failed to connect to server: $e';
+      });
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  // New method to generate follow-ups independently
+  Future<void> _fetchFollowUps() async {
+    if (_selectedImage == null) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final uri = Uri.parse('http://192.168.1.11:5000/detect');
+      var request = http.MultipartRequest('POST', uri)
+        ..files.add(await http.MultipartFile.fromPath('image', _selectedImage!.path));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseString = await response.stream.bytesToString();
+        final data = json.decode(responseString);
+
+        final followupList =
+            data['followups'] != null
+                ? List<Map<String, String>>.from(
+                  data['followups'].map<Map<String, String>>(
+                    (item) => {
+                      'question': item['question'].toString(),
+                      'answer': item['answer'].toString(),
+                    },
+                  ),
+                )
+                : <Map<String, String>>[];
+
+        setState(() {
+          _followUpQA = followupList;
+          // Optional: clear other texts if you want
+          //_detectionResultText = '';
+          //_ocrText = '';
+        });
+      } else {
+        setState(() {
+          _detectionResultText = 'Server error: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _detectionResultText = 'Failed to connect to server: $e';
       });
     } finally {
       setState(() => _isLoading = false);
@@ -204,21 +255,25 @@ class _CameraUIState extends State<CameraUI> {
                 const CircularProgressIndicator()
               else ...[
                 ElevatedButton.icon(
-                  onPressed:
-                      _selectedImage != null
-                          ? () => _sendImageForObjectDetection(_selectedImage!)
-                          : null,
+                  onPressed: _selectedImage != null
+                      ? () => _sendImageForObjectDetection(_selectedImage!)
+                      : null,
                   icon: const Icon(Icons.camera_enhance),
                   label: const Text('Detect Objects (YOLOv5)'),
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed:
-                      _selectedImage != null
-                          ? () => _sendImageForOCR(_selectedImage!)
-                          : null,
+                  onPressed: _selectedImage != null
+                      ? () => _sendImageForOCR(_selectedImage!)
+                      : null,
                   icon: const Icon(Icons.text_fields),
                   label: const Text('Extract Text (OCR)'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  onPressed: _selectedImage != null ? _fetchFollowUps : null,
+                  icon: const Icon(Icons.question_answer),
+                  label: const Text('Generate Follow-Up Questions'),
                 ),
               ],
 
